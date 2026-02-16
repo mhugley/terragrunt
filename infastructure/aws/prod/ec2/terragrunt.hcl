@@ -4,11 +4,6 @@ terraform {
 
 dependency "vpc" {
   config_path = "../vpc"
-
-  mock_outputs = {
-    vpc_id            = "vpc-mock"
-    public_subnet_ids = ["subnet-mock"]
-  }
 }
 
 inputs = {
