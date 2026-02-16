@@ -29,10 +29,10 @@ data "aws_ami" "ubuntu" {
   }
 }
 
-# Security group: SSH and optional OpenClaw gateway port from allowed IPs only
+# Security group: SSH and optional gateway port (18789) from allowed IPs only
 resource "aws_security_group" "this" {
   name        = "${var.name}-sg"
-  description = "SSH and optional OpenClaw gateway (18789) from allowed IPs only"
+  description = "SSH and optional gateway (18789) from allowed IPs only"
   vpc_id      = var.vpc_id
 
   # SSH from your IP only
@@ -44,15 +44,15 @@ resource "aws_security_group" "this" {
     cidr_blocks = var.allowed_ssh_cidrs
   }
 
-  # OpenClaw Gateway (optional; use false and SSH port-forward if you prefer)
+  # Optional gateway port (e.g. 18789); set enable_gateway_port = false to use SSH port-forward only
   dynamic "ingress" {
-    for_each = var.enable_openclaw_gateway_port ? [1] : []
+    for_each = var.enable_gateway_port ? [1] : []
     content {
-      description = "OpenClaw Gateway"
-      from_port   = 18789
-      to_port     = 18789
+      description = "Gateway"
+      from_port   = var.gateway_port
+      to_port     = var.gateway_port
       protocol    = "tcp"
-      cidr_blocks = coalesce(var.allowed_openclaw_cidrs, var.allowed_ssh_cidrs)
+      cidr_blocks = coalesce(var.allowed_gateway_cidrs, var.allowed_ssh_cidrs)
     }
   }
 

@@ -35,16 +35,22 @@ variable "allowed_ssh_cidrs" {
   type        = list(string)
 }
 
-variable "allowed_openclaw_cidrs" {
-  description = "CIDR blocks allowed for OpenClaw gateway (18789). Usually same as allowed_ssh_cidrs."
+variable "allowed_gateway_cidrs" {
+  description = "CIDR blocks allowed for optional gateway port. Defaults to allowed_ssh_cidrs when null."
   type        = list(string)
   default     = null
 }
 
-variable "enable_openclaw_gateway_port" {
-  description = "Allow TCP 18789 for OpenClaw Gateway. Set to false to use SSH port-forwarding only."
+variable "enable_gateway_port" {
+  description = "Allow TCP on gateway_port (e.g. 18789). Set to false to use SSH port-forwarding only."
   type        = bool
-  default     = true
+  default     = false
+}
+
+variable "gateway_port" {
+  description = "Port number for optional gateway ingress (e.g. 18789). Used when enable_gateway_port is true."
+  type        = number
+  default     = 18789
 }
 
 variable "root_volume_size_gb" {

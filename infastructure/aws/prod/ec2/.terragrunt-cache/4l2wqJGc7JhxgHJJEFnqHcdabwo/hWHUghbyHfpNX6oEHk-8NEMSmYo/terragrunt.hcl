@@ -13,7 +13,7 @@ dependency "vpc" {
 
 inputs = {
   aws_region    = "us-east-1"
-  name          = "openclaw-gateway"
+  name          = "ec2-gateway"
   instance_type = "t3.small"
 
   vpc_id    = dependency.vpc.outputs.vpc_id
@@ -25,8 +25,8 @@ inputs = {
   # Your IP only — run: curl -s ifconfig.me  then use ["YOUR_IP/32"] (replace 0.0.0.0/32 below)
   allowed_ssh_cidrs = ["0.0.0.0/32"]
 
-  # Allow OpenClaw gateway on 18789 from same IP; set to false to use SSH port-forward only
-  enable_openclaw_gateway_port = true
+  # Allow gateway on 18789 from same IP; set to false to use SSH port-forward only
+  enable_gateway_port = true
 
   tags = {
     Environment = "dev"
